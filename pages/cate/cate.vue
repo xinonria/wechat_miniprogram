@@ -5,7 +5,8 @@
 			<!-- 左侧滑动条 -->
 			<scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
 				<block v-for="(item, i) in cateList" :key="i">
-					<view :class="['left-scroll-view-item', i === active? 'active':'']" @click="changeActive(i)">{{item.cat_name}}</view>
+					<view :class="['left-scroll-view-item', i === active? 'active':'']" @click="changeActive(i)">{{item.cat_name}}
+					</view>
 				</block>
 			</scroll-view>
 			<!-- 右侧滑动条 -->
@@ -16,7 +17,7 @@
 					<!-- 三级品牌分类 -->
 					<view class="cate-lv3-list">
 						<view class="cate-lv3-item" v-for="(item3, i3) in item2.children" :key="i3" @click="gotoGoodsList(item3)">
-							<img :src="item3.cat_icon"/>
+							<img :src="item3.cat_icon" />
 							<text>{{item3.cat_name}}</text>
 						</view>
 					</view>
@@ -27,8 +28,10 @@
 </template>
 
 <script>
+	import badgeMix from '@/mixins/tabbar-badge.js'
 	export default {
-		
+
+		mixins: [badgeMix],
 		data() {
 			return {
 				// 可使用窗口高度
@@ -40,7 +43,7 @@
 				// 分类数据列表
 				cateList: [],
 				// 二级分类列表
-				cateLevel2: []
+				cateLevel2: [],
 			};
 		},
 
@@ -61,19 +64,19 @@
 				this.cateList = res.message
 				this.cateLevel2 = this.cateList[0].children
 			},
-			
+
 			changeActive(index) {
 				this.active = index
 				this.cateLevel2 = this.cateList[index].children
-				this.scrollTop = this.scrollTop? 0:1
+				this.scrollTop = this.scrollTop ? 0 : 1
 			},
-			
+
 			gotoGoodsList(item) {
 				uni.navigateTo({
 					url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
 				})
 			},
-			
+
 			gotoSearch() {
 				uni.navigateTo({
 					url: '/subpkg/search/search'
@@ -114,7 +117,7 @@
 				}
 			}
 		}
-		
+
 		.cate-lv2-title {
 			font-size: 12px;
 			font-weight: bold;
@@ -122,11 +125,11 @@
 			padding: 15px 0;
 		}
 	}
-	
+
 	.cate-lv3-list {
 		display: flex;
 		flex-wrap: wrap;
-		
+
 		.cate-lv3-item {
 			width: 33.33%;
 			margin-bottom: 10px;
@@ -134,12 +137,12 @@
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			
+
 			image {
 				height: 60px;
 				width: 60px;
 			}
-			
+
 			text {
 				font-size: 12px;
 			}

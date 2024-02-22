@@ -43,12 +43,14 @@
 </template>
 
 <script>
+	import badgeMix from '@/mixins/tabbar-badge.js'
 	export default {
+		mixins: [badgeMix],
 		data() {
 			return {
 				swiperList: [],
 				navList: [],
-				floorList: []
+				floorList: [],
 			};
 		},
 
@@ -110,7 +112,7 @@
 					})
 				}
 			},
-			
+
 			gotoSearch() {
 				uni.navigateTo({
 					url: '/subpkg/search/search'
@@ -157,7 +159,7 @@
 		display: flex;
 		padding-left: 10rpx;
 	}
-	
+
 	.search-box {
 		position: sticky;
 		top: 0;
