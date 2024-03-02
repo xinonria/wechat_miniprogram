@@ -1,14 +1,16 @@
 <template>
-	<view class="goods-item" @click="gotoDetail(goods)">
+	<view class="goods-item">
 		<!-- 左侧图片 -->
 		<view class="goods-item-left">
-			<img :src="goods.goods_small_logo || defaultPic" class="goods-pic" />
+			<radio :checked="goods.goods_state" color="#C00000" v-if="showRadio" @click="radioClickHandler"></radio>
+			<img :src="goods.goods_small_logo || defaultPic" class="goods-pic" @click="gotoDetail(goods)"/>
 		</view>
 		<!-- 右侧信息 -->
 		<view class="goods-item-right">
-			<view class="goods-item-name">{{goods.goods_name}}</view>
+			<view class="goods-item-name" @click="gotoDetail(goods)">{{goods.goods_name}}</view>
 			<view class="goods-info-box">
-				<view class="goods-price">￥{{goods.goods_price | tofixed}}</view>
+				<view class="goods-price" @click="gotoDetail(goods)">￥{{goods.goods_price | tofixed}}</view>
+				<uni-number-box :min="1" :value="goods.goods_count" @change="numChangeHandler" v-if="showNum"></uni-number-box>
 			</view>
 		</view>
 	</view>
@@ -19,6 +21,16 @@
 			goods: {
 				type: Object,
 				default: {}
+			},
+			
+			showRadio: {
+				type: Boolean,
+				default: false
+			},
+			
+			showNum: {
+				type: Boolean,
+				default: false
 			}
 		},
 
@@ -40,6 +52,20 @@
 				uni.navigateTo({
 					url: '/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
 				})
+			},
+			
+			radioClickHandler() {
+				this.$emit('radio-change', {
+					goods_id: this.goods.goods_id,
+					goods_state: !this.goods.goods_state
+				})
+			},
+			
+			numChangeHandler(val) {
+				this.$emit('num-change', {
+					goods_id: this.goods.goods_id,
+					goods_count: +val
+				})
 			}
 		}
 	}
@@ -51,6 +77,9 @@
 		border-bottom: 1px solid #f0f0f0;
 
 		.goods-item-left {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 			margin-right: 5px;
 
 			.goods-pic {
@@ -62,11 +91,18 @@
 
 		.goods-item-right {
 			display: flex;
+			flex: 1;
 			flex-direction: column;
 			justify-content: space-around;
 
 			.goods-name {
 				font-size: 13px;
+			}
+			
+			.goods-info-box {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 			}
 
 			.goods-price {

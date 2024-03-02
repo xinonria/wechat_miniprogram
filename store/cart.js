@@ -10,7 +10,7 @@ export default {
 	
 	mutations: {
 		addToCart(state, goods) {
-			const findRes = state.cart.find((x) => x.goods_id == goods.goods_id)
+			const findRes = state.cart.find((x) => x.goods_id === goods.goods_id)
 			if (!findRes) {
 				state.cart.push(goods)
 			}
@@ -18,6 +18,27 @@ export default {
 				findRes.goods_count += 1
 			}
 			
+			this.commit('m_cart/saveToStorage')
+		},
+		
+		updateGoodsState(state, goods) {
+			const findRes = state.cart.find((x) => x.goods_id === goods.goods_id)
+			if (findRes) {
+				findRes.goods_state = goods.goods_state
+				this.commit('m_cart/saveToStorage')
+			}
+		},
+		
+		updateGoodsCount(state, goods) {
+			const findRes = state.cart.find((x) => x.goods_id === goods.goods_id)
+			if (findRes) {
+				findRes.goods_count = goods.goods_count
+				this.commit('m_cart/saveToStorage')
+			}
+		},
+		
+		removeGoodsById(state, goods) {
+			state.cart = state.cart.filter((x) => x.goods_id !== goods.goods_id)
 			this.commit('m_cart/saveToStorage')
 		},
 		
